@@ -11,6 +11,11 @@ import js.html.Console;
 /**   
     @author jxav
  */
+#if android
+@:headerCode("
+	#include <android/log.h>
+")
+#end
 @:final class Logger
 {
 
