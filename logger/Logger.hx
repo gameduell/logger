@@ -34,9 +34,10 @@ import js.html.Console;
 		}
 		return null();
     ")
-    public static function print(v: Dynamic,  ?pos: haxe.PosInfos = null){}
+    public static function print(v: Dynamic, ?pos: haxe.PosInfos = null)
+    {}
 #else
-    public static dynamic function print(v: Dynamic,  ?pos: haxe.PosInfos = null) untyped
+    public static dynamic function print(v: Dynamic, ?pos: haxe.PosInfos = null) untyped
     {
 #if flash
         tf = flash.Boot.getTrace();
