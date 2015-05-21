@@ -1,10 +1,13 @@
-= Description =
+## Description
 
-Library for logging to encapsulate the logging logic as a separate package.
+This library provides a simple print method. It is basically a replacement to the trace method in order to not append the file name and line number automatically.
 
-= Release Log =
+## Usage:
 
-== 1.0.0 ==
+Simply call Logger.print("<some string>")
 
-- print() function which was previously implemented in DuellKit
+## Release Log
 
+### 1.0.0
+
+Initial release
