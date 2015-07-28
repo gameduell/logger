@@ -41,11 +41,14 @@ import js.html.Console;
 @:final class Logger
 {
 
+	public static var print = __print;
+
 ///static
 #if flash
     private static var tf: flash.text.TextField = null;
 #end
 
+@:noCompletion
 #if android
     @:functionCode("
 		if (((v == null()))){
@@ -56,10 +59,10 @@ import js.html.Console;
 		}
 		return null();
     ")
-    public static function print(v: Dynamic, ?pos: haxe.PosInfos = null)
+    public static function __print(v: Dynamic)
     {}
 #else
-    public static dynamic function print(v: Dynamic, ?pos: haxe.PosInfos = null) untyped
+    public static dynamic function __print(v: Dynamic) untyped
     {
 #if flash
         tf = flash.Boot.getTrace();
