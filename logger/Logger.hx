@@ -41,8 +41,6 @@ import js.html.Console;
 @:final class Logger
 {
 
-	public static var print = __print;
-
 ///static
 #if flash
     private static var tf: flash.text.TextField = null;
@@ -59,10 +57,15 @@ import js.html.Console;
 		}
 		return null();
     ")
-    public static function __print(v: Dynamic)
-    {}
+	private static function androidPrint(v: Dynamic)
+	{}
+
+    public static dynamic function print(v: Dynamic)
+    {
+		androidPrint(v);
+	}
 #else
-    public static dynamic function __print(v: Dynamic) untyped
+    public static dynamic function print(v: Dynamic) untyped
     {
 #if flash
         tf = flash.Boot.getTrace();
