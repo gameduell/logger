@@ -53,7 +53,7 @@ import js.html.Console;
 			__android_log_print(ANDROID_LOG_INFO, HX_CSTRING(\"duell\"), HX_CSTRING(\"\"));
 		}
 		else{
-			__android_log_print(ANDROID_LOG_INFO, HX_CSTRING(\"duell\"), v->toString());
+			__android_log_print(ANDROID_LOG_INFO, HX_CSTRING(\"duell\"), v.GetPtr() ? v->toString().__s : \"null\");
 		}
 		return null();
     ")
@@ -62,7 +62,19 @@ import js.html.Console;
 
     public static dynamic function print(v: Dynamic)
     {
-		androidPrint(v);
+		if (v == null)
+		{
+			androidPrint("null");
+		}
+		else
+		{
+			var msg: String = Std.string(v);
+
+			if (v.length > 4000)
+				msg = msg.substr(0, 4000);
+
+			androidPrint(msg);
+		}
 	}
 #else
     public static dynamic function print(v: Dynamic) untyped
