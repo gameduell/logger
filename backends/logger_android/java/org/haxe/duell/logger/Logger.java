@@ -126,14 +126,7 @@ public final class Logger
                 writeToFile(
                         new BufferedOutputStream(new FileOutputStream(file)), log.toString());
 
-                // send the log in e-mail
-                Intent intent = new Intent(Intent.ACTION_SENDTO,
-                        Uri.fromParts("mailto", "julian.mancera@gameduell.de", null));
-                intent.putExtra(Intent.EXTRA_SUBJECT, "duell log report: " + new Date().toString());
-                intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file));
-                context.startActivity(Intent.createChooser(intent, "Send log"));
-
-                // flush logcat so it doesn't send repeated info
+                // flush logcat so it doesn't store repeated info
                 Runtime.getRuntime().exec("logcat -c");
 
                 return true;

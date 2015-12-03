@@ -6,6 +6,10 @@ package logger;
 
 import hxjni.JNI;
 
+@:headerCode("
+	#include <android/log.h>
+")
+
 /**
    @author jman
  */
@@ -28,5 +32,35 @@ class Logger
     public static function flush(): Bool
     {
         return flushNative();
+    }
+
+    @:functionCode("
+		if (((v == null()))){
+			__android_log_print(ANDROID_LOG_INFO, HX_CSTRING(\"duell\"), HX_CSTRING(\"\"));
+		}
+		else{
+			__android_log_print(ANDROID_LOG_INFO, HX_CSTRING(\"duell\"), v->toString());
+		}
+		return null();
+    ")
+
+    private static function androidPrint(v: Dynamic)
+    {}
+
+    public static dynamic function print(v: Dynamic)
+    {
+        if (v == null)
+        {
+            androidPrint("null");
+        }
+        else
+        {
+            var msg: String = Std.string(v);
+
+            if (v.length > 4000)
+                msg = msg.substr(0, 4000);
+
+            androidPrint(msg);
+        }
     }
 }

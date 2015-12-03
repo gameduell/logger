@@ -33,11 +33,6 @@ import js.html.Console;
 /**
     @author jxav
  */
-#if android
-@:headerCode("
-	#include <android/log.h>
-")
-#end
 @:final class Logger
 {
 
@@ -46,47 +41,6 @@ import js.html.Console;
     private static var tf: flash.text.TextField = null;
 #end
 
-#if android
-    @:functionCode("
-		if (((v == null()))){
-			__android_log_print(ANDROID_LOG_INFO, HX_CSTRING(\"duell\"), HX_CSTRING(\"\"));
-		}
-		else{
-			__android_log_print(ANDROID_LOG_INFO, HX_CSTRING(\"duell\"), v->toString());
-		}
-		return null();
-    ")
-
-	private static function androidPrint(v: Dynamic)
-	{}
-
-    public static dynamic function print(v: Dynamic)
-    {
-		if (v == null)
-		{
-			androidPrint("null");
-		}
-		else
-		{
-			var msg: String = Std.string(v);
-
-			if (v.length > 4000)
-				msg = msg.substr(0, 4000);
-
-			androidPrint(msg);
-		}
-	}
-
-    /**
-        Logging functions   // TODO check if can be removed since should be in backend
-     */
-    public static function initialize(): Void;
-
-    public static function getLogPath(): String;
-
-    public static function flush(): Bool;
-
-#else
     public static dynamic function print(v: Dynamic, ?pos: haxe.PosInfos = null) untyped
     {
 #if flash
@@ -97,8 +51,6 @@ import js.html.Console;
         __dollar__print(v);
 #elseif php
         php.Lib.print(v);
-#elseif cpp
-        //cpp.Lib.print(v); // TODO check moved to ios backend
 #elseif js
         var msg = js.Boot.__string_rec(v,"");
         var d;
@@ -114,13 +66,11 @@ import js.html.Console;
         else if (  __js__("typeof console") != "undefined"
         && __js__("console").log != null )
             __js__("console").log(msg); // document-less js (which may include a line break)
-
 #elseif cs
         cs.system.Console.Write(v);
 #elseif java
         var str:String = v;
         untyped __java__("java.lang.System.out.print(str)");
 #end
-    } // TODO to be moved to each backend
-#end ///not android
+    }
 }
