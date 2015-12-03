@@ -56,8 +56,36 @@ import js.html.Console;
 		}
 		return null();
     ")
-    public static function print(v: Dynamic, ?pos: haxe.PosInfos = null)
-    {}
+
+	private static function androidPrint(v: Dynamic)
+	{}
+
+    public static dynamic function print(v: Dynamic)
+    {
+		if (v == null)
+		{
+			androidPrint("null");
+		}
+		else
+		{
+			var msg: String = Std.string(v);
+
+			if (v.length > 4000)
+				msg = msg.substr(0, 4000);
+
+			androidPrint(msg);
+		}
+	}
+
+    /**
+        Logging functions   // TODO check if can be removed since should be in backend
+     */
+    public static function initialize(): Void;
+
+    public static function getLogPath(): String;
+
+    public static function flush(): Bool;
+
 #else
     public static dynamic function print(v: Dynamic, ?pos: haxe.PosInfos = null) untyped
     {
@@ -70,7 +98,7 @@ import js.html.Console;
 #elseif php
         php.Lib.print(v);
 #elseif cpp
-        cpp.Lib.print(v);
+        //cpp.Lib.print(v); // TODO check moved to ios backend
 #elseif js
         var msg = js.Boot.__string_rec(v,"");
         var d;
@@ -93,6 +121,6 @@ import js.html.Console;
         var str:String = v;
         untyped __java__("java.lang.System.out.print(str)");
 #end
-    }
+    } // TODO to be moved to each backend
 #end ///not android
 }

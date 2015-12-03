@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <library xmlns="duell">
 
+    <include path="backends/logger_ios/duell_library.xml" if="ios" />
+    <include path="backends/logger_android/duell_library.xml" if="android" />
+
     <platform-config>
         <documentation>
             <documentation-folder library="logger" path="documentation" />
