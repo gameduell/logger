@@ -4,8 +4,6 @@
  */
 package org.haxe.duell.logger;
 
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import org.haxe.duell.DuellActivity;
@@ -19,7 +17,6 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.lang.ref.WeakReference;
-import java.util.Date;
 
 import android.content.Context;
 
@@ -28,8 +25,6 @@ import android.content.Context;
  */
 public final class Logger
 {
-    private static final String TAG = Logger.class.getSimpleName();
-
     /** The data lock to write files. */
     public static final Object DATA_LOCK = new Object();
 
@@ -88,6 +83,7 @@ public final class Logger
             log.append("\n");
 
             // retrieve all possible information from logcat
+            // the max size of the logcat is around 256Kb by "adb logcat -g"
             Process process = Runtime.getRuntime().exec("logcat -d -v long");
             BufferedReader bufferedReader = new BufferedReader(
                     new InputStreamReader(process.getInputStream()));
@@ -115,7 +111,7 @@ public final class Logger
 
             bufferedReader.close();
 
-            // send only if external media is available, else we can't store the file
+            // store only if external media is available
             if (isExternalMediaAvailable(true))
             {
                 // print the log to a file in cache

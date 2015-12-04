@@ -11,8 +11,14 @@
 
 #import <Foundation/Foundation.h>
 
+// path of the duell log in the device filesystem
 static NSString *duellLogPath;
+
+// name of the log file
 static NSString *fileName = @"duell_log.txt";
+
+// size in characters allowed for the log file
+static int logSize = 10000;
 
 static NSString* valueToNSString(value haxeString)
 {
@@ -31,24 +37,56 @@ static void redirectOutput()
     // redirect the stdout to the specified file
     freopen([duellLogPath cStringUsingEncoding:NSASCIIStringEncoding],"a+",stdout);
 
+    // disable the buffering
+    setbuf(stdout, NULL);
+
     fprintf(stdout, "\n\nBeginning of the redirected stdout\n");
 }
 
-static void removeLog()
+static void truncateLogFile()
 {
-  NSFileManager *fileManager = [NSFileManager defaultManager];
-  NSString *documentsPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+    NSArray *allPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [allPaths objectAtIndex:0];
+    NSString *path = [documentsDirectory stringByAppendingPathComponent:fileName];
 
-  NSString *filePath = [documentsPath stringByAppendingPathComponent:fileName];
-  NSError *error;
-  BOOL success = [fileManager removeItemAtPath:filePath error:&error];
-  if (success) {
-      NSLog(@"The log was deleted successfully");
-  }
-  else
-  {
-      NSLog(@"Could not delete file -:%@ ",[error localizedDescription]);
-  }
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    if([fileManager fileExistsAtPath:path])
+    {
+        NSError* error = nil;
+        NSString *content = [NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:&error];
+
+        // truncation
+        if ([content length] > logSize)
+        {
+            NSString *truncated = [content substringFromIndex: [content length] - logSize];
+
+            NSString *newContent = [NSString stringWithFormat: @"... (the file was truncated because it was too long)%@", truncated];
+
+            // delete the old file
+            [fileManager removeItemAtPath:path error:&error];
+
+            // redirect the stdout to the specified file
+            freopen([duellLogPath cStringUsingEncoding:NSASCIIStringEncoding],"a+",stdout);
+
+            // disable the buffering again, just in case
+            setbuf(stdout, NULL);
+
+            // append the truncated data to the new file
+            BOOL success = [newContent  writeToFile:path
+                                        atomically:NO
+                                        encoding:NSUTF8StringEncoding
+                                        error:nil];
+
+            if (success)
+            {
+                fprintf(stdout, "Logger: The log was stored successfully\n");
+            }
+            else
+            {
+                fprintf(stdout, "Logger: Could not store the log\n");
+            }
+        }
+    }
 }
 
 static void initialize()
@@ -56,6 +94,7 @@ static void initialize()
     // redirect only if there is not debug available
     if (!isatty(STDERR_FILENO))
     {
+        truncateLogFile();
         redirectOutput();
     }
     else
@@ -80,7 +119,7 @@ DEFINE_PRIM(getLogPath, 0);
 
 static value flush()
 {
-    fflush(stdout);
+    truncateLogFile();
     return alloc_bool(YES);
 }
 DEFINE_PRIM(flush, 0);
