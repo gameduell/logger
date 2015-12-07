@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project xmlns="duell">
+
+	<app title="Logger Test" file="LoggerTest" package="com.gameduell.loggertest" version="0.0.1" company="GameDuell" />
+
+	<main name="Main" />
+
+	<source path="source" />
+
+	<duelllib name="graphics" version="master" />
+	<duelllib name="input" version="master" />
+	<duelllib name="logger" version="master" />
+	<duelllib name="runloop" version="2.0.3+" />
+	<duelllib name="preferences" version="master"/>
+
+</project>
