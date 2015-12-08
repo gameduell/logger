@@ -18,7 +18,7 @@ static NSString *duellLogPath;
 static NSString *fileName = @"duell_log.txt";
 
 // size in characters allowed for the log file
-static int logSize = 10000;
+static int logSize = 100 * 1024; /// 100 KB
 
 static NSString* valueToNSString(value haxeString)
 {
