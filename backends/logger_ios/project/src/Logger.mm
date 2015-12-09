@@ -15,18 +15,10 @@
 static NSString *duellLogPath;
 
 // name of the log file
-static NSString *fileName = @"duell_log.txt";
+static NSString *fileName = @"duellkit.log";
 
 // size in characters allowed for the log file
-static int logSize = 100 * 1024; /// 100 KB
-
-static NSString* valueToNSString(value haxeString)
-{
-    const char *cString = val_get_string(haxeString);
-
-    NSString *string = [NSString stringWithUTF8String:cString];
-    return string;
-}
+static int logSize = 100 * 1024; // 100 KB
 
 static void redirectOutput()
 {
@@ -40,7 +32,9 @@ static void redirectOutput()
     // disable the buffering
     setbuf(stdout, NULL);
 
-    fprintf(stdout, "\n\nBeginning of the redirected stdout\n");
+    fprintf(stdout, "\n\n==============================\n");
+    fprintf(stdout, "NEW LOG FILE\n");
+    fprintf(stdout, "==============================\n");
 }
 
 static void truncateLogFile()

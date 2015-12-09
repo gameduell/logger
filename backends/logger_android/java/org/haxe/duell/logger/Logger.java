@@ -28,7 +28,7 @@ public final class Logger
     /** The data lock to write files. */
     public static final Object DATA_LOCK = new Object();
 
-    public static final String FILE_NAME = "duell_log.txt";
+    public static final String LOG_FILE_NAME = "duellkit.log";
 
     private static WeakReference<Context> ctxReference = new WeakReference<Context>(DuellActivity.getInstance());
 
@@ -45,7 +45,7 @@ public final class Logger
         {
             // check if there exists a previous log file
             final Context context = ctxReference.get();
-            String logPath = context.getExternalCacheDir() + "/" + FILE_NAME;
+            String logPath = context.getExternalCacheDir() + "/" + LOG_FILE_NAME;
             final File file = new File(logPath);
 
             if (file.exists())
@@ -116,7 +116,7 @@ public final class Logger
             {
                 // print the log to a file in cache
                 final Context context = ctxReference.get();
-                duellLogPath = context.getExternalCacheDir() + "/" + FILE_NAME;
+                duellLogPath = context.getExternalCacheDir() + "/" + LOG_FILE_NAME;
                 final File file = new File(duellLogPath);
 
                 writeToFile(
