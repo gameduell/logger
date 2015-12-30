@@ -118,4 +118,10 @@ static value flush()
 }
 DEFINE_PRIM(flush, 0);
 
+static void testException()
+{
+    [NSException raise:@"This is a test exception" format:@"dont worry %d", 0];
+}
+DEFINE_PRIM(testException, 0);
+
 extern "C" int loggerios_register_prims() { return 0; }

@@ -28,5 +28,6 @@ package logger;
 
 extern class Logger
 {
-    public static dynamic function print(v: Dynamic, ?pos: haxe.PosInfos = null) untyped;
+    public static dynamic function print(v: Dynamic, ?pos: haxe.PosInfos = null) untyped
+    {}
 }

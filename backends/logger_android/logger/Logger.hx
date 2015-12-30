@@ -18,6 +18,7 @@ class Logger
     private static var initializeNative = JNI.createStaticMethod("org/haxe/duell/logger/Logger", "initialize", "()V");
     private static var getLogPathNative = JNI.createStaticMethod("org/haxe/duell/logger/Logger", "getLogPath", "()Ljava/lang/String;");
     private static var flushNative = JNI.createStaticMethod("org/haxe/duell/logger/Logger", "flush", "()Z");
+    private static var testExceptionNative = JNI.createStaticMethod("org/haxe/duell/logger/Logger", "testException", "()V");
 
     public static function initialize(): Void
     {
@@ -32,6 +33,11 @@ class Logger
     public static function flush(): Bool
     {
         return flushNative();
+    }
+
+    public static function testException(): Void
+    {
+        return testExceptionNative();
     }
 
     @:functionCode("

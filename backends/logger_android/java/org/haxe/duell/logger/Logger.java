@@ -61,6 +61,23 @@ public final class Logger
 
     public static String getLogPath()
     {
+        if (isExternalMediaAvailable(true))
+        {
+            // check if there exists a previous log file
+            final Context context = ctxReference.get();
+            String logPath = context.getExternalCacheDir() + "/" + LOG_FILE_NAME;
+            final File file = new File(logPath);
+
+            if (file.exists())
+            {
+                duellLogPath = logPath;
+            }
+            else
+            {
+                duellLogPath = "";
+            }
+        }
+
         return duellLogPath;
     }
 
@@ -134,6 +151,17 @@ public final class Logger
         }
 
         return false;
+    }
+
+    public static void testException()
+    {
+        DuellActivity.getInstance().runOnUiThread(new Runnable()
+        {
+            @Override
+            public void run() {
+                throw new IllegalStateException("Test Exception, dont worry.");
+            }
+        });
     }
 
     //
