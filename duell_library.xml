@@ -3,6 +3,7 @@
 
     <include path="backends/logger_ios/duell_library.xml" if="ios" />
     <include path="backends/logger_android/duell_library.xml" if="android" />
+    <include path="backends/logger_html5/duell_library.xml" if="html5" />
 
     <platform-config>
         <documentation>
