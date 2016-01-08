@@ -14,11 +14,13 @@ class Logger
     private static var initializeNative = Lib.load("loggerios", "initialize", 0);
     private static var getLogPathNative = Lib.load("loggerios", "getLogPath", 0);
     private static var flushNative = Lib.load("loggerios", "flush", 0);
-    private static var testExceptionNative = Lib.load("loggerios", "testException", 0);
 
-    public static function initialize(): Void
+    public static function initialize(callback: Void->Void): Void
     {
-        return initializeNative();
+        initializeNative();
+
+        /// not async for ios
+        callback();
     }
 
     public static function getLogPath(): String
@@ -29,11 +31,6 @@ class Logger
     public static function flush(): Bool
     {
         return flushNative();
-    }
-
-    public static function testException(): Void
-    {
-        return testExceptionNative();
     }
 
     public static dynamic function print(v: Dynamic, ?pos: haxe.PosInfos = null) untyped

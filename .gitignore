@@ -2,3 +2,4 @@
 .idea
 backends/logger_ios/ndll
 backends/logger_ios/project/obj
+test/Export

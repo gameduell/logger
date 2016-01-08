@@ -5,11 +5,11 @@
 package;
 
 import logger.Logger;
-import input.VirtualInputManager;
 import msignal.Signal.Signal0;
 import input.TouchManager;
-import graphics.Graphics;
 import input.Touch;
+import input.VirtualInputManager;
+import graphics.Graphics;
 import runloop.RunLoop;
 import runloop.MainRunLoop;
 
@@ -40,7 +40,10 @@ class Main
 			{
 				VirtualInputManager.initialize(function()
 				{
-					startApp();
+					Logger.initialize(function()
+					{
+						startApp();
+					});
 				});
 			});
 		});
@@ -101,9 +104,6 @@ class Main
 			virtualInputVisible = false;
 			trace('Input ended');
 		});
-
-		// Logging
-		Logger.initialize();
 	}
 
 	// Display Sync

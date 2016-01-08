@@ -28,13 +28,11 @@ package logger;
 
 extern class Logger
 {
-    public static function initialize(): Void;
+    public static function initialize(callback: Void->Void): Void;
 
     public static function getLogPath(): String;
 
     public static function flush(): Bool;
-
-    public static function testException(): Void;
 
     public static dynamic function print(v: Dynamic, ?pos: haxe.PosInfos = null): Void;
 }

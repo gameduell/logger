@@ -9,8 +9,11 @@ package logger;
  */
 class Logger
 {
-    public static function initialize(): Void
-    {}
+    public static function initialize(callback: Void->Void): Void
+    {
+        /// not needed in html5
+        callback();
+    }
 
     public static function getLogPath(): String
     {
@@ -21,9 +24,6 @@ class Logger
     {
         return false;
     }
-
-    public static function testException(): Void
-    {}
 
     public static dynamic function print(v: Dynamic, ?pos: haxe.PosInfos = null)
     {

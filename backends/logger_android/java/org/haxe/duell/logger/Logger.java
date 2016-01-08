@@ -153,17 +153,6 @@ public final class Logger
         return false;
     }
 
-    public static void testException()
-    {
-        DuellActivity.getInstance().runOnUiThread(new Runnable()
-        {
-            @Override
-            public void run() {
-                throw new IllegalStateException("Test Exception, dont worry.");
-            }
-        });
-    }
-
     //
     // External
     //
