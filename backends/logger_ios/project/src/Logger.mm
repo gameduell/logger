@@ -8,8 +8,7 @@
 #endif
 
 #include <hx/CFFI.h>
-
-#import <Foundation/Foundation.h>
+#include "Logger.h"
 
 // path of the duell log in the device filesystem
 static NSString *duellLogPath;
@@ -98,24 +97,26 @@ static void initialize()
 }
 DEFINE_PRIM(initialize, 0);
 
-static value getLogPath()
+
+@implementation Logger
++ (BOOL)flush
+{
+    truncateLogFile();
+    return true;
+}
+
++ (NSString*)getLogPath
 {
     if (duellLogPath)
     {
-        return alloc_string(duellLogPath.UTF8String);
+        return @"duellLogPath";
     }
     else
     {
-        return alloc_null();
+        return @"";
     }
 }
-DEFINE_PRIM(getLogPath, 0);
+@end
 
-static value flush()
-{
-    truncateLogFile();
-    return alloc_bool(YES);
-}
-DEFINE_PRIM(flush, 0);
 
 extern "C" int loggerios_register_prims() { return 0; }

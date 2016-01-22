@@ -4,6 +4,8 @@
 	
 	<files id="src">
 
+		<compilerflag value="-Iinclude"/>
+
 		<include name="${haxelib:duell_duellbuildios}/native/native.xml" />
 
 		<file name="src/Logger.mm"/>
