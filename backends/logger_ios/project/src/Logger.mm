@@ -82,7 +82,7 @@ static void truncateLogFile()
     }
 }
 
-static void initialize()
+static void initializeLogger()
 {
     // redirect only if there is not debug available
     if (!isatty(STDERR_FILENO))
@@ -95,7 +95,7 @@ static void initialize()
         NSLog(@"Debug mode, the output will not be redirected");
     }
 }
-DEFINE_PRIM(initialize, 0);
+DEFINE_PRIM(initializeLogger, 0);
 
 
 @implementation Logger

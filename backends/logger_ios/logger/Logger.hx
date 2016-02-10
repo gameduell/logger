@@ -11,7 +11,7 @@ import cpp.Lib;
  */
 class Logger
 {
-    private static var initializeNative = Lib.load("loggerios", "initialize", 0);
+    private static var initializeNative = Lib.load("loggerios", "initializeLogger", 0);
     private static var getLogPathNative = Lib.load("loggerios", "getLogPath", 0);
     private static var flushNative = Lib.load("loggerios", "flush", 0);
 
