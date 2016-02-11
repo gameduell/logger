@@ -82,7 +82,7 @@ static void truncateLogFile()
     }
 }
 
-static void initializeLogger()
+static value logger_initialize()
 {
     // redirect only if there is not debug available
     if (!isatty(STDERR_FILENO))
@@ -94,8 +94,27 @@ static void initializeLogger()
     {
         NSLog(@"Debug mode, the output will not be redirected");
     }
+
+    return alloc_null();
 }
-DEFINE_PRIM(initializeLogger, 0);
+DEFINE_PRIM(logger_initialize, 0);
+
+static value logger_flush()
+{
+    return alloc_bool([Logger flush]);
+}
+DEFINE_PRIM(logger_flush, 0);
+
+static value logger_getLogPath()
+{
+    NSString* logPath = [Logger getLogPath];
+
+    //convert NSString to haxe string
+    value haxeString = alloc_string_len((const char *)[logPath UTF8String], [logPath length]);
+
+    return haxeString;
+}
+DEFINE_PRIM(logger_getLogPath, 0);
 
 
 @implementation Logger
@@ -109,7 +128,7 @@ DEFINE_PRIM(initializeLogger, 0);
 {
     if (duellLogPath)
     {
-        return @"duellLogPath";
+        return duellLogPath;
     }
     else
     {
