@@ -72,6 +72,9 @@ class Logger
 
     public static dynamic function print(v: Dynamic)
     {
+#if no_traces
+    return;
+#end
         if (v == null)
         {
             androidPrint("null");

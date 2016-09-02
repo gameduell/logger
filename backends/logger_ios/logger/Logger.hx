@@ -56,6 +56,8 @@ class Logger
 
     public static dynamic function print(v: Dynamic, ?pos: haxe.PosInfos = null) untyped
     {
+#if !no_traces
         cpp.Lib.print(v);
+#end
     }
 }

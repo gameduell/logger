@@ -48,6 +48,8 @@ class Logger
 
     public static dynamic function print(v: Dynamic, ?pos: haxe.PosInfos = null)
     {
+#if !no_traces
         untyped js.Boot.__trace(v, pos);
+#end
     }
 }
