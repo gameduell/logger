@@ -8,9 +8,9 @@ Simply call Logger.print("<some string>")
 
 ## Release Log
 
-### 1.0.0
+### 3.0.0
 
-Initial release
+- Major Android upgrade.
 
 ### 2.0.0
 
@@ -18,3 +18,7 @@ Initial release
 - The size of the log is limited to 100KB.
 - Created backends for Android, iOS and html5.
 - Cleaned up the logger class and made it extern.
+
+### 1.0.0
+
+- Initial release
