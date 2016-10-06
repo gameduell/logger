@@ -108,6 +108,12 @@ public final class Logger
 
         try
         {
+            final Context context = ctxReference.get();
+            duellLogPath = context.getExternalCacheDir() + "/" + LOG_FILE_NAME;
+            final File file = new File(duellLogPath);
+            BufferedOutputStream bufferedOutput = new BufferedOutputStream(new FileOutputStream(file));
+            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(bufferedOutput);
+
             // provide useful device information
             log.append(System.getProperty("os.version")); // OS version
             log.append("\n");
@@ -120,12 +126,15 @@ public final class Logger
             log.append(Build.VERSION.RELEASE); // Version
             log.append("\n");
 
+            writeToFile(outputStreamWriter, log.toString());
+
             // retrieve all possible information from logcat
             // the max size of the logcat is around 256Kb by "adb logcat -g"
             Process process = Runtime.getRuntime().exec("logcat -d -v long");
             BufferedReader bufferedReader = new BufferedReader(
                     new InputStreamReader(process.getInputStream()));
 
+            log.setLength(0);
             String line;
             while ((line = bufferedReader.readLine()) != null)
             {
@@ -145,26 +154,17 @@ public final class Logger
                 {
                     log.append("\n");
                 }
+
+                writeToFile(outputStreamWriter, log.toString());
+                log.setLength(0);
             }
 
             bufferedReader.close();
 
-            // store only if external media is available
-            if (isExternalMediaAvailable(true))
-            {
-                // print the log to a file in cache
-                final Context context = ctxReference.get();
-                duellLogPath = context.getExternalCacheDir() + "/" + LOG_FILE_NAME;
-                final File file = new File(duellLogPath);
+            // flush logcat so it doesn't store repeated info
+            Runtime.getRuntime().exec("logcat -c");
 
-                writeToFile(
-                        new BufferedOutputStream(new FileOutputStream(file)), log.toString());
-
-                // flush logcat so it doesn't store repeated info
-                Runtime.getRuntime().exec("logcat -c");
-
-                return true;
-            }
+            outputStreamWriter.close();
         }
         catch (IOException e)
         {
@@ -205,19 +205,22 @@ public final class Logger
     //
 
     /**
-     * Writes a string to the given {@link OutputStream}.
+     * Writes a string to the given {@link OutputStreamWriter}.
      *
      * @param _os   the output stream to write to
      * @param _data the data to write
      * @throws IOException if the writing fails
      */
-    private static void writeToFile(final OutputStream _os, final String _data) throws IOException
+    private static void writeToFile(final OutputStreamWriter _outputStreamWriter, final String _data) throws IOException
     {
         synchronized (DATA_LOCK)
         {
-            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(_os);
-            outputStreamWriter.write(_data);
-            outputStreamWriter.close();
+            // store only if external media is available
+            if (isExternalMediaAvailable(true))
+            {
+                // print the log to a file in cache
+                _outputStreamWriter.write(_data);
+            }
         }
     }
 }
