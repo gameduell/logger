@@ -56,10 +56,11 @@ public final class Logger
 
     public static String getLogPath()
     {
-        if (isExternalMediaAvailable(true))
+        final Context context = ctxReference.get();
+        if (context != null && isExternalMediaAvailable(true))
         {
             // check if there exists a previous log file
-            String logPath = String.format("%s/%s", ctxReference.get().getExternalCacheDir(), LOG_FILE_NAME);
+            String logPath = String.format("%s/%s", context.getExternalCacheDir(), LOG_FILE_NAME);
             if (new File(logPath).exists())
             {
                 return logPath;
@@ -71,11 +72,13 @@ public final class Logger
 
     public static boolean flush()
     {
-        if (!isExternalMediaAvailable(true)) return false;
+        final Context context = ctxReference.get();
+
+        if (context != null && !isExternalMediaAvailable(true)) return false;
 
         try
         {
-            final File file = new File(String.format("%s/%s", ctxReference.get().getExternalCacheDir(), LOG_FILE_NAME));
+            final File file = new File(String.format("%s/%s", context.getExternalCacheDir(), LOG_FILE_NAME));
             final BufferedOutputStream bufferedOutput = new BufferedOutputStream(new FileOutputStream(file));
             final OutputStreamWriter output = new OutputStreamWriter(bufferedOutput);
 
