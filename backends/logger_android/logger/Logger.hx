@@ -36,15 +36,11 @@ import hxjni.JNI;
  */
 class Logger
 {
-    private static var initializeNative = JNI.createStaticMethod("org/haxe/duell/logger/Logger", "initialize", "()V");
     private static var getLogPathNative = JNI.createStaticMethod("org/haxe/duell/logger/Logger", "getLogPath", "()Ljava/lang/String;");
     private static var flushNative = JNI.createStaticMethod("org/haxe/duell/logger/Logger", "flush", "()Z");
 
     public static function initialize(callback: Void->Void): Void
     {
-        initializeNative();
-
-		/// not async for android
 		callback();
     }
 
